@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { registerUser } from "../utils/ApiFunctions"
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 
 const Registration = () => {
 	const [registration, setRegistration] = useState({
@@ -13,25 +13,50 @@ const Registration = () => {
 	const [errorMessage, setErrorMessage] = useState("")
 	const [successMessage, setSuccessMessage] = useState("")
 
+
+
+	 const navigate = useNavigate(); //Added for redirection
+
 	const handleInputChange = (e) => {
 		setRegistration({ ...registration, [e.target.name]: e.target.value })
 	}
 
+
+	// frontend validation
+	const validateForm = () => {
+		if (!registration.firstName.trim()) return "First name is required"
+		if (!registration.lastName.trim()) return "Last name is required"
+		if (!registration.email.includes("@")) return "Valid email is required"
+		if (registration.password.length < 6) return "Password must be at least 6 characters"
+		return null
+	}
+
 	const handleRegistration = async (e) => {
 		e.preventDefault()
+		// run validation before API call
+		const error = validateForm()
+		if (error) {
+			setErrorMessage(error)
+			setTimeout(() => setErrorMessage(""), 5000)
+			return
+		}
 		try {
-			const result = await registerUser(registration)
-			setSuccessMessage(result)
-			setErrorMessage("")
+			// const result = await registerUser(registration)
+			// setSuccessMessage(result)
+			// setErrorMessage("")
+			await registerUser(registration)
+			  // 👇 Add console.log right here
+        console.log("Redirecting to verify-otp with email:", registration.email)
+			 //Redirect to OTP verification page and pass email
+            navigate("/verify-otp", { state: { email: registration.email } });
 			setRegistration({ firstName: "", lastName: "", email: "", password: "" })
+			 // Optional: you can set success message for OTP page to show
+    setSuccessMessage("Registration successful! Please check your email for OTP.");
 		} catch (error) {
 			setSuccessMessage("")
 			setErrorMessage(`Registration error : ${error.message}`)
 		}
-		setTimeout(() => {
-			setErrorMessage("")
-			setSuccessMessage("")
-		}, 5000)
+		
 	}
 
 	return (
@@ -108,6 +133,12 @@ const Registration = () => {
 					<button type="submit" className="btn btn-hotel" style={{ marginRight: "10px" }}>
 						Register
 					</button>
+					
+
+
+
+
+
 					<span style={{ marginLeft: "10px" }}>
 						Already have an account? <Link to={"/login"}>Login</Link>
 					</span>
