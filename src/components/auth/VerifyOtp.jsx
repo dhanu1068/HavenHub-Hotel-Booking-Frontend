@@ -6,17 +6,20 @@ const VerifyOtp = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // ✅ Get email from Registration redirect
+     // Backend base URL from .env
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+    // Get email from Registration redirect
     const email = location.state?.email || "";
     console.log("VerifyOtp loaded with email:", email);
 
-    // ✅ Store OTP as array of 6 digits
+    // Store OTP as array of 6 digits
     const [otp, setOtp] = useState(Array(6).fill(""));
     const inputRefs = useRef([]);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
 
-    // ✅ Handle OTP input changes
+    // Handle OTP input changes
     const handleChange = (element, index) => {
         if (isNaN(element.value)) return;
 
@@ -30,20 +33,20 @@ const VerifyOtp = () => {
         }
     };
 
-    // ✅ Handle backspace navigation
+    // Handle backspace navigation
     const handleKeyDown = (e, index) => {
         if (e.key === "Backspace" && !otp[index] && index > 0) {
             inputRefs.current[index - 1].focus();
         }
     };
 
-    // ✅ Handle OTP verification
+    // Handle OTP verification
     const handleVerifyOtp = async (e) => {
         e.preventDefault();
         const enteredOtp = otp.join(""); // Convert array to string
 
         try {
-            const response = await axios.post("http://localhost:9192/auth/verify-otp", {
+            const response = await axios.post(`${API_BASE_URL}/auth/verify-otp`, {
                 email,
                 otp: enteredOtp
             });
@@ -61,7 +64,7 @@ const VerifyOtp = () => {
     // ✅ Handle resending OTP
     const handleResendOtp = async () => {
         try {
-            const response = await axios.post("http://localhost:9192/auth/resend-otp", { email });
+            const response = await axios.post(`${API_BASE_URL}/auth/resend-otp`, { email });
             setSuccessMessage(response.data); // "New OTP sent to your email!"
             setErrorMessage("");
         } catch (error) {
