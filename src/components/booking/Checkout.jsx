@@ -18,7 +18,8 @@ const Checkout = () => {
 	const [error, setError] = useState(null)
 	const [isLoading, setIsLoading] = useState(true)
 	const [roomInfo, setRoomInfo] = useState({
-		photo: "",
+		// photo: "",
+		imageUrl: "",
 		roomType: "",
 		roomPrice: ""
 	})
@@ -51,7 +52,8 @@ const Checkout = () => {
 						) : (
 							<div className="room-info">
 								<img
-									src={`data:image/png;base64,${roomInfo.photo}`}
+									// src={`data:image/png;base64,${roomInfo.photo}`}
+									src={roomInfo.imageUrl  ? roomInfo.imageUrl : "/placeholder.jpg"}
 									alt="Room photo"
 									style={{ width: "100%", height: "200px" }}
 								/>

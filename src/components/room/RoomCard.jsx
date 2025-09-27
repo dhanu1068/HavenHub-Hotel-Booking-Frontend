@@ -11,7 +11,8 @@ const RoomCard = ({ room }) => {
 						<Link to={`/book-room/${room.id}`}>
 							<Card.Img
 								variant="top"
-								src={`data:image/png;base64, ${room.photo}`}
+								// src={`data:image/png;base64, ${room.photo}`}
+								src={room.imageUrl ? room.imageUrl : "/placeholder.jpg"}
 								alt="Room Photo"
 								style={{ width: "100%", maxWidth: "200px", height: "auto" }}
 							/>

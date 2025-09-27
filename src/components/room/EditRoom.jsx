@@ -30,7 +30,7 @@ const EditRoom = () => {
 			try {
 				const roomData = await getRoomById(roomId)
 				setRoom(roomData)
-				setImagePreview(roomData.photo)
+				setImagePreview(roomData.imageUrl) // setImagePreview(roomData.photo)	
 			} catch (error) {
 				console.error(error)
 			}
@@ -48,7 +48,7 @@ const EditRoom = () => {
 				setSuccessMessage("Room updated successfully!")
 				const updatedRoomData = await getRoomById(roomId)
 				setRoom(updatedRoomData)
-				setImagePreview(updatedRoomData.photo)
+				setImagePreview(updatedRoomData.imageUrl)
 				setErrorMessage("")
 			} else {
 				setErrorMessage("Error updating room")
@@ -116,7 +116,7 @@ const EditRoom = () => {
 							/>
 							{imagePreview && (
 								<img
-									src={`data:image/jpeg;base64,${imagePreview}`}
+									src={imagePreview}         //{`data:image/jpeg;base64,${imagePreview}`}
 									alt="Room preview"
 									style={{ maxWidth: "400px", maxHeight: "400" }}
 									className="mt-3"

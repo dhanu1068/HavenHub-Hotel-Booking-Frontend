@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { Card, Carousel, Col, Container, Row } from "react-bootstrap"
 
 const RoomCarousel = () => {
-	const [rooms, setRooms] = useState([{ id: "", roomType: "", roomPrice: "", photo: "" }])
+	const [rooms, setRooms] = useState([{ id: "", roomType: "", roomPrice: "", imageUrl: "" }])
 	const [errorMessage, setErrorMessage] = useState("")
 	const [isLoading, setIsLoading] = useState(false)
 
@@ -45,7 +45,7 @@ const RoomCarousel = () => {
 											<Link to={`/book-room/${room.id}`}>
 												<Card.Img
 													variant="top"
-													src={`data:image/png;base64, ${room.photo}`}
+													src={room.imageUrl ? room.imageUrl : "/placeholder.jpg"} // src={`data:image/png;base64, ${room.photo}`}
 													alt="Room Photo"
 													className="w-100"
 													style={{ height: "200px" }}
