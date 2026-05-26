@@ -53,9 +53,19 @@ const Registration = () => {
 			 // Optional: you can set success message for OTP page to show
     setSuccessMessage("Registration successful! Please check your email for OTP.");
 		} catch (error) {
-			setSuccessMessage("")
-			setErrorMessage(`Registration error : ${error.message}`)
-		}
+
+    console.log("Full error:", error);
+    console.log("Response data:", error.response?.data);
+
+    setSuccessMessage("");
+
+    setErrorMessage(
+        error.response?.data ||
+        error.response?.data?.message ||
+        error.message ||
+        "Registration failed"
+    );
+}
 		
 	}
 
